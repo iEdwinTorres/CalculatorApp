@@ -47,7 +47,14 @@ enum ClaculatorButton: String {
     
 }
 
+class GlobalEnviorment: ObservableObject {
+    
+    @Published var display = "000"
+}
+
 struct ContentView: View {
+    
+    @EnvironmentObject var env: GlobalEnviorment
     
     let buttons: [[ClaculatorButton]] = [
         [.clear, .space, .divide, .multiply],
@@ -66,7 +73,7 @@ struct ContentView: View {
                 
                 HStack {
                     Spacer()
-                    Text("42").foregroundColor(.white)
+                    Text(env.display).foregroundColor(.white)
                         .font(.system(size: 64))
                 }.padding()
             
@@ -102,6 +109,6 @@ struct ContentView: View {
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        ContentView()
+        ContentView().environmentObject(GlobalEnviorment())
     }
 }
