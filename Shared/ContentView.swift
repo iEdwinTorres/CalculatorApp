@@ -60,13 +60,15 @@ struct ContentView: View {
     
     @EnvironmentObject var env: GlobalEnvironment
     
-    let buttons: [[CalculatorButton]] = [
-        [.clear, .space, .divide, .multiply],
-        [.seven, .eight, .nine, .minus],
-        [.four, .five, .six, .plus],
+    static let buttons: [[CalculatorButton]] = [
+        [.clear, .space, .divide],
+        [.seven, .eight, .nine],
+        [.four, .five, .six],
         [.one, .two, .three],
         [.zero, .decimal]
     ]
+    
+    static let operators: [CalculatorButton] = [.multiply, .minus, .plus, .equal]
     
     var body: some View {
         
@@ -81,9 +83,18 @@ struct ContentView: View {
                         .font(.system(size: 64))
                 }.padding()
             
-                ForEach(buttons, id: \.self) {row in
-                    HStack (spacing: 12) {
-                        ForEach(row, id: \.self) { button in
+                HStack(spacing: 12) {
+                    VStack(spacing: 12) {
+                        ForEach(ContentView.buttons, id: \.self){ row in
+                            HStack(spacing: 12) {
+                                ForEach(row, id: \.self){ button in
+                                    CalculatorButtonView(button: button)
+                                }
+                            }
+                        }
+                    }
+                    VStack(spacing: 12) {
+                        ForEach(ContentView.operators, id: \.self){ button in
                             CalculatorButtonView(button: button)
                         }
                     }
@@ -99,13 +110,21 @@ struct ContentView: View {
         
         @EnvironmentObject var env: GlobalEnvironment
         
+        var buttonHeight: CGFloat {
+            if button == .equal {
+                return (UIScreen.main.bounds.width - 4 * 12) / 2
+            } else {
+                return (UIScreen.main.bounds.width - 5 * 12) / 4
+            }
+        }
+        
         var body: some View {
             Button(action: {
                 self.env.receiveInput(calculatorButton: self.button)
             }) {
                 Text(button.title)
                 .font(.system(size: 32))
-                    .frame(width: self.buttonWidth(button: button), height: (UIScreen.main.bounds.width - 5 * 12) / 4)
+                    .frame(width: self.buttonWidth(button: button), height: buttonHeight)
                     .foregroundColor(.white)
                     .background(button.backgroundColor)
                     .cornerRadius(self.buttonWidth(button: button))
