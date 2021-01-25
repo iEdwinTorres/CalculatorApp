@@ -10,7 +10,7 @@ import SwiftUI
 enum CalculatorButton: String {
     
     case zero, one, two, three, four, five, six, seven, eight, nine, decimal
-    case equals, plus, minus, multiply, divide
+    case equal, plus, minus, multiply, divide
     case clear, space
     
     var title: String {
@@ -30,7 +30,7 @@ enum CalculatorButton: String {
             case .minus: return "-"
             case .plus: return "+"
             case .decimal: return "."
-            case .equals: return "="
+            case .equal: return "="
             case .space: return ""
             default:  return "C"
         }
@@ -64,7 +64,7 @@ struct ContentView: View {
         [.clear, .space, .divide, .multiply],
         [.seven, .eight, .nine, .minus],
         [.four, .five, .six, .plus],
-        [.one, .two, .three, .equals],
+        [.one, .two, .three],
         [.zero, .decimal]
     ]
     
@@ -85,10 +85,10 @@ struct ContentView: View {
                     HStack (spacing: 12) {
                         ForEach(row, id: \.self) { button in
                             CalculatorButtonView(button: button)
-                            
                         }
                     }
                 }
+                
             }.padding(.bottom)
         }
     }
